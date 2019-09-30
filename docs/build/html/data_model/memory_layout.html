@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Memory Layout &mdash; OmniSciDB  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. External API" href="api.html" />
+    <link rel="prev" title="3. Physical Data Layout" href="physical_layout.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OmniSciDB
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">High Level Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">1. OmniSciDB at 30,000 feet</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Data Model</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="catalog/index.html">1. Catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="columnar_layout.html">2. Columnar Data Organization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="physical_layout.html">3. Physical Data Layout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Memory  Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">5. External API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">6. Data Types</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Query Execution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../execution/overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/flow.html">2. Data Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/parse.html">3. Parser / Planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/optimization.html">4. Interpreter / Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/scheduler.html">5. Scheduler / DAG Executor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/codegen.html">6. Code Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/kernels.html">7. Execution Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/results.html">8. Query Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/workflows.html">9. Example Workflows</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../components/logger.html">1. Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/query_state.html">2. QueryState</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OmniSciDB</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>4. Memory  Layout</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/data_model/memory_layout.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="memory-layout">
+<h1>4. Memory  Layout<a class="headerlink" href="#memory-layout" title="Permalink to this headline">¶</a></h1>
+<p>Once data is loaded from disk (see <a class="reference internal" href="physical_layout.html"><span class="doc">Physical Data Layout</span></a>), the higher level memory hierarchies in the <cite>BufferMgr</cite> take over. Data must pass between hierarchies; i.e. data must travel from disk to CPU to GPU, and can not be loaded directly from disk into GPU (note that this design directly mimics the way data is loaded to modern GPUs over the PCI-E bus). Additionally, not all data from CPU is required to be loaded to GPU for a given query.</p>
+<p>Data buffers in the in-memory levels of the BufferMgr hierarchy are backed by <cite>slabs</cite> and managed by the <cite>DataMgr</cite>. CPU Memory is allocated in 4GB slabs, while GPU memory allocations are currently limited to 2GB slabs. When a request comes in to allocate memory (e.g. for an input chunk, query parameter, or output buffer) the <cite>DataMgr</cite> will search for the first open space in the slab that can fulfill the rqeuest. If the current slab is full, a new slab is allocated. Note that this means utilities like <cite>htop</cite> or <cite>nvtop</cite> may show OmniSciDB exhausting all available GPU memory, when in reality memory is still available to the DB from the slab allocations. The <cite>omnisql</cite> commands <cite>memory_summary</cite>, <cite>memory_gpu</cite> and <cite>memory_cpu</cite> show information about allocated slabs and current slab occupany.</p>
+<p>Internally, slabs are divided into 512 byte pages. Allocations within a slab are aligned to a 512 byte boundary; therefore, all top-level OmniSciDB allocations are aligned to 512 bytes.</p>
+<p>Buffers within a slab contain access counters to track the last access to the buffer and allow for a last-recently used caching mechanism to evict data from a slab if it is no longer needed. Buffers may also be <em>pinned</em> to a slab, preventing them from being evicted.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="5. External API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="physical_layout.html" class="btn btn-neutral float-left" title="3. Physical Data Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, OmniSci, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

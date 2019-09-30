@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. OmniSciDB at 30,000 feet &mdash; OmniSciDB  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Catalog" href="../data_model/catalog/index.html" />
+    <link rel="prev" title="OmniSciDB Developer Documentation" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OmniSciDB
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">High Level Overview</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. OmniSciDB at 30,000 feet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction-to-omniscidb">1.1. Introduction to OmniSciDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#high-level-diagram">1.2. High Level Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#query-execution">1.3. Query Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simple-execution-model">1.4. Simple Execution Model</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Data Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/catalog/index.html">1. Catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/columnar_layout.html">2. Columnar Data Organization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/physical_layout.html">3. Physical Data Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/memory_layout.html">4. Memory  Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/api.html">5. External API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/types.html">6. Data Types</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Query Execution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../execution/overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/flow.html">2. Data Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/parse.html">3. Parser / Planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/optimization.html">4. Interpreter / Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/scheduler.html">5. Scheduler / DAG Executor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/codegen.html">6. Code Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/kernels.html">7. Execution Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/results.html">8. Query Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../execution/workflows.html">9. Example Workflows</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../components/logger.html">1. Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/query_state.html">2. QueryState</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OmniSciDB</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>1. OmniSciDB at 30,000 feet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/overview/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="omniscidb-at-30-000-feet">
+<h1>1. OmniSciDB at 30,000 feet<a class="headerlink" href="#omniscidb-at-30-000-feet" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction-to-omniscidb">
+<h2>1.1. Introduction to OmniSciDB<a class="headerlink" href="#introduction-to-omniscidb" title="Permalink to this headline">¶</a></h2>
+<p>OmniSciDB is an open source SQL-based, relational, columnar database engine
+that leverages the full performance and parallelism of modern hardware
+(both CPUs and GPUs) to enable querying of multi-billion row datasets
+in milliseconds, without the need for indexing, pre-aggregation, or
+downsampling.</p>
+<p>OmniSciDB can be run on hybrid CPU/GPU systems, as well as on CPU-only systems
+featuring X86, Power, and ARM (experimental support) architectures. To achieve
+maximum performance, OmniSciDB features multi-tiered caching of data between
+storage, CPU memory, and GPU memory, as well as an innovative Just-In-Time
+(JIT) query compilation framework built around LLVM.</p>
+<p>This developer documentation provides an in-depth discussion of the OmniSciDB
+internals, and details the data model and query execution flows.</p>
+</div>
+<div class="section" id="high-level-diagram">
+<h2>1.2. High Level Diagram<a class="headerlink" href="#high-level-diagram" title="Permalink to this headline">¶</a></h2>
+<img alt="../_images/platform_overview.png" src="../_images/platform_overview.png" />
+</div>
+<div class="section" id="query-execution">
+<h2>1.3. Query Execution<a class="headerlink" href="#query-execution" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>Query Execution</cite> section provides a high-level overview
+of how a query is executed by the OmniSci server.</p>
+<p>At a high-level, all SQL queries made to the server pass through the
+<a class="reference external" href="https://thrift.apache.org/">Thrift</a> <cite>sql_execute</cite> endpoint. The query string is passed to Apache <a class="reference external" href="https://calcite.apache.org/">Calcite</a>
+for parsing and cost-based optimization, yielding an optimized relational
+algebra tree. This relational algebra tree is then passed through OmniSci-specific
+optimization passes and translated into an OmniSCi-specific abstract syntax tree (AST).
+The AST provides all the information neccessary to generate native machine code for
+query execution on the target device. Execution then occurs in parallel on the target
+device, with device results being aggregated and reduced into a final <cite>ResultSet</cite>
+for each query step.</p>
+<p>The sections following provide in-depth details on each of the
+stages involved in executing a query.</p>
+</div>
+<div class="section" id="simple-execution-model">
+<h2>1.4. Simple Execution Model<a class="headerlink" href="#simple-execution-model" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<p class="plantuml">
+<img src="../_images/plantuml-c175c2b793c7164df3db72cf51973954c7cc6caf.png" alt=" &#64;startuml
+
+ start
+
+ :Parse and Validate SQL;
+
+ :Generate Optimized
+  Relational Algebra Sequence;
+
+ :Prepare Execution Environment;
+
+ repeat
+     fork
+         :Data Ownership,
+          Identification,
+          Load (as required);
+         :Execute Query Kernel
+          on Target Device;
+     fork again
+         :Data Ownership,
+          Identification,
+          Load (as required);
+         :Execute Query Kernel
+          on Target Device;
+     fork again
+         :Data Ownership,
+          Identification,
+          Load (as required);
+         :Execute Query Kernel
+          on Target Device;
+     end fork
+     :Reduce Result;
+
+ while (Query Completed?)
+
+ :Return Result;
+
+ stop
+
+ &#64;enduml"/>
+</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../data_model/catalog/index.html" class="btn btn-neutral float-right" title="1. Catalog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="OmniSciDB Developer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, OmniSci, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. Execution Kernels &mdash; OmniSciDB  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Query Results" href="results.html" />
+    <link rel="prev" title="6. Code Generation" href="codegen.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> OmniSciDB
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">High Level Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">1. OmniSciDB at 30,000 feet</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Data Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/catalog/index.html">1. Catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/columnar_layout.html">2. Columnar Data Organization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/physical_layout.html">3. Physical Data Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/memory_layout.html">4. Memory  Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/api.html">5. External API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_model/types.html">6. Data Types</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Query Execution</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow.html">2. Data Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parse.html">3. Parser / Planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimization.html">4. Interpreter / Optimizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">5. Scheduler / DAG Executor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codegen.html">6. Code Generation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. Execution Kernels</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#query-fragment-descriptor">7.1. Query Fragment Descriptor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#query-execution-context">7.2. Query Execution Context</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cpu-execution">7.2.1. CPU execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gpu-execution">7.2.2. GPU execution</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dispatch-fragments">7.3. Dispatch fragments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">8. Query Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">9. Example Workflows</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Components</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../components/logger.html">1. Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/query_state.html">2. QueryState</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">OmniSciDB</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>7. Execution Kernels</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/execution/kernels.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="execution-kernels">
+<h1>7. Execution Kernels<a class="headerlink" href="#execution-kernels" title="Permalink to this headline">¶</a></h1>
+<p>From the moment the query is compiled and the generated code is available (per execution step),
+the execution process is started and it continues until all required results from all devices are
+available on the CPU host. In our execution mode, each available device (GPU/CPU) is represented by a single CPU thread
+and that thread is responsible to make sure the execution process for that particular device
+finished successfully and the results were collected.</p>
+<p>Overall, the execution process is consisted of the following main steps, each being done concurrently per execution device:</p>
+<ol class="arabic simple">
+<li><p>Assigning fragments to the device</p></li>
+<li><p>Fetching all required input data (copying them to the device if necessary)</p></li>
+<li><p>Preparing output buffers (allocations and initializations)</p></li>
+<li><p>Executing the generated code (launching kernels)</p></li>
+</ol>
+<p>Item 1 is done by the <code class="docutils literal notranslate"><span class="pre">QueryFragmentDescriptor</span></code> class. Item 2 is done in <cite>Executor::dispatchFragments</cite>.
+Items 3 and 4 are initiated by the <code class="docutils literal notranslate"><span class="pre">dispatchFragments</span></code> function through <code class="docutils literal notranslate"><span class="pre">ExecutionDispatch</span></code> class’s member functions,
+but most of the work is actually done by the <code class="docutils literal notranslate"><span class="pre">QueryExecutionContext</span></code> class.
+There are plenty of optimization passes around these simplified steps,
+which might lead to bypassing some of them, but the current itemized list captures the high level idea.
+Next, we will discuss each of these components more thoroughly.</p>
+<img alt="../_images/dispatch_fragments.png" src="../_images/dispatch_fragments.png" />
+<div class="section" id="query-fragment-descriptor">
+<h2>7.1. Query Fragment Descriptor<a class="headerlink" href="#query-fragment-descriptor" title="Permalink to this headline">¶</a></h2>
+<p>The basic unit of work in OmniSciDB is a fragment. The main goal of the <code class="docutils literal notranslate"><span class="pre">QueryFragmentDescriptor</span></code> class is
+to maintain useful information about fragments that are involved with execution of a particular work unit.
+Among this class’s responsibilities is the ability to partition fragments into different groups
+so that each is assigned to an available device (or kernel).</p>
+</div>
+<div class="section" id="query-execution-context">
+<h2>7.2. Query Execution Context<a class="headerlink" href="#query-execution-context" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">QueryExecutionContext</span></code> object is created for each device and is in charge of the following high level tasks:</p>
+<ol class="arabic simple">
+<li><p>Preparing the requirements for kernel execution</p></li>
+<li><p>Launching the execution kernel on the device</p></li>
+<li><p>Error handling for the launched kernel</p></li>
+<li><p>Transferring the output buffers from the device back to the host</p></li>
+</ol>
+<p>Whether this class is created for GPU execution or not,
+there might be a different set of actions required.
+As a result of this and for the sake of clarity, we discuss each case separately.</p>
+<div class="section" id="cpu-execution">
+<h3>7.2.1. CPU execution<a class="headerlink" href="#cpu-execution" title="Permalink to this headline">¶</a></h3>
+<p>Upon construction of this class, and depending on the query type
+(e.g., whether the query is a group by or not),
+the output buffer is allocated and initialized accordingly (through a unique object of <code class="docutils literal notranslate"><span class="pre">QueryMemoryInitializer</span></code>).
+Different aggregate targets may require different initial values.
+After this stage, it is possible to launch the CPU code through <code class="docutils literal notranslate"><span class="pre">launchCpuCode</span></code>.
+By doing so, the compiled code is executed on the CPU.
+After execution, error codes are readily verified, and then results are ready to be collected.</p>
+</div>
+<div class="section" id="gpu-execution">
+<h3>7.2.2. GPU execution<a class="headerlink" href="#gpu-execution" title="Permalink to this headline">¶</a></h3>
+<p>Similar to CPU execution, upon construction of this object a proper set of output buffers
+are allocated and initialized on the GPU device.
+It is possible to allocate more than one output buffer on the GPU. This decision is made based on some low-level
+optimizations and depending on the query’s type and related details about the metadata involved.
+Regardless of the number of output buffers, there should be a matching number of buffers allocated on the CPU too,
+so that GPU results can be directly transferred back to the host.</p>
+<p>All arguments for the GPU kernel should also be properly allocated and transferred to the GPU device
+using the <code class="docutils literal notranslate"><span class="pre">prepareKernelParams</span></code> function.</p>
+<p>Once all required output buffers are ready, the compiled code for the GPU can be launched.
+Proper error handling is done immediately after the kernel launch.
+The error code buffer is transferred back to the CPU and gets verified.
+Once a successful execution is verified, all output buffers are directly transferred back
+to the CPU to their corresponding buffers on the CPU.</p>
+</div>
+</div>
+<div class="section" id="dispatch-fragments">
+<h2>7.3. Dispatch fragments<a class="headerlink" href="#dispatch-fragments" title="Permalink to this headline">¶</a></h2>
+<p>As discussed above, the <code class="docutils literal notranslate"><span class="pre">QueryFragmentDescriptor</span></code> assigns fragments to devices (i.e., kernels).
+By using this information, the <code class="docutils literal notranslate"><span class="pre">Executor</span></code> concurrently dispatches an execution procedure per device
+(to execute a single or multiple fragments).
+For CPU execution, this means assigning a CPU thread to each available fragment.
+For GPU execution, this means assigning a CPU thread to each group of fragments per device.
+These thread concurrently execute the code on all available resources until all executions
+and data transfers are successfully finished.</p>
+<p>The execution procedure mentioned above is done through the <code class="docutils literal notranslate"><span class="pre">ExecutionDispatch</span></code> class.
+Upon each usage of its <code class="docutils literal notranslate"><span class="pre">run</span></code> member function,
+it proceeds with execution of the assigned fragments on a particular device.
+To do so, among many other things, it fetches proper input data to be available on each device, and also creates and owns
+an instance of <code class="docutils literal notranslate"><span class="pre">QueryExecutionContext</span></code> per device (which itself handles required output buffer allocations, etc.).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="results.html" class="btn btn-neutral float-right" title="8. Query Results" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="codegen.html" class="btn btn-neutral float-left" title="6. Code Generation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, OmniSci, Inc
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
