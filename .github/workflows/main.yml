@@ -2,7 +2,7 @@ name: "Build docs and push to Pages"
 on:
   push:
     branches:
-      - master
+      - gh-actions
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@master
         env:
           ACCESS_TOKEN: ${{ secrets.GITHUB_WRITE_TOKEN }}
-          BASE_BRANCH: master # The branch the action should deploy from.
+          BASE_BRANCH: gh-actions # The branch the action should deploy from.
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: docs/build/html # The folder the action should deploy.
           #BUILD_SCRIPT: npm install && npm run-script build # The build script
