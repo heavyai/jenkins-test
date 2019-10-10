@@ -21,6 +21,7 @@ jobs:
       - name: Build sphinx documentation
         working-directory: docs
         run: |
+          sed -i "/segment_analytics/s/^#//" source/conf.py
           make html
           touch build/html/.nojekyll
       - name: Deploy to Pages
