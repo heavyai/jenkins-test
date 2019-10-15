@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Make Doxygen docs
-        working-directory: build
         run: |
           mkdir build
           pushd build
