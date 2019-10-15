@@ -12,8 +12,11 @@ jobs:
       - name: Make Doxygen docs
         working-directory: build
         run: |
+          mkdir build
+          pushd build
           cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ..
           make doxygen
+          popd
       - name: Setup python
         uses: actions/setup-python@v1
         with:
