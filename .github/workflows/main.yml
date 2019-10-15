@@ -14,7 +14,7 @@ jobs:
         working-directory: build
         run: |
           pwd
-          ls -la
+          ls -la ..
           cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ..
           make doxygen
       - name: Setup python
