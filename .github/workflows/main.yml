@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Make Doxygen docs
+        working-directory: build
+        run: |
+          cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ..
+          make doxygen
       - name: Setup python
         uses: actions/setup-python@v1
         with:
