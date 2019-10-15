@@ -15,7 +15,6 @@ jobs:
         run: |
           cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ..
           make doxygen
-          popd
       - name: Setup python
         uses: actions/setup-python@v1
         with:
