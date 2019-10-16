@@ -13,8 +13,7 @@ jobs:
       - name: Make Doxygen docs
         working-directory: build
         run: |
-          echo "cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ../docs"
-          cmake -DENABLE_CUDA=off -DENABLE_FOLLY=off ../docs
+          cmake ../docs
           make doxygen
       - name: Setup python
         uses: actions/setup-python@v1

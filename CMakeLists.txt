@@ -624,7 +624,7 @@ endif()
 # doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/../docs/CMakeLists.txt)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/docs/CMakeLists.txt)
 endif(DOXYGEN_FOUND)
 
 # Packaging
