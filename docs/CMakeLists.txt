@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.2)
+
 configure_file(
   ${CMAKE_SOURCE_DIR}/../Doxyfile.in ${CMAKE_BINARY_DIR}/../Doxyfile @ONLY)
 add_custom_target(doxygen ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/../Doxyfile
