@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: mkdir build
-      - name: Install doxygen
+      - name: Install doxygen deps
         run: sudo apt install -y doxygen graphviz
       - name: Make Doxygen docs
         working-directory: build
