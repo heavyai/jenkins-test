@@ -36,7 +36,7 @@ pipeline {
                 stage('Checkout') {
                     steps {
                         checkout scm
-                        script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim() }
+                        script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
                     }
                 }
                 stage('Test') {
