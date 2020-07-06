@@ -41,7 +41,7 @@ pipeline {
                     steps {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             script { stage_succeeded = false }
-                            setBuildStatus("Running tests", "PENDING", "$STAGE_NAME", "$GIT_COMMIT");
+                            setBuildStatus("Running tests", "PENDING", "$STAGE_NAME", "${env.GIT_COMMIT}");
                             sh """
                                 echo test
                             """
@@ -52,12 +52,12 @@ pipeline {
                         always {
                             script {
                                 if (stage_succeeded == true) {
-                                    setBuildStatus("Build succeeded", "SUCCESS", "$STAGE_NAME", "$GIT_COMMIT");
+                                    setBuildStatus("Build succeeded", "SUCCESS", "$STAGE_NAME", "${env.GIT_COMMIT}");
                                 } else {
                                     sh """
                                         echo fail
                                     """
-                                    setBuildStatus("Build failed", "FAILURE", "$STAGE_NAME", "$GIT_COMMIT");
+                                    setBuildStatus("Build failed", "FAILURE", "$STAGE_NAME", "${env.GIT_COMMIT}");
                                 }
                             }
                         }
