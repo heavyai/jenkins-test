@@ -23,7 +23,7 @@ pipeline {
     agent none
     options { skipDefaultCheckout() }
     stages {
-        stage('Set pending status') {
+        stage('Set pending status PR') {
             agent any
             when {
                 expression { env.CHANGE_ID ==~ /.*/ }
@@ -37,12 +37,13 @@ pipeline {
                 """
             }
         }
-        stage('Set pending status') {
+        stage('Set pending status master') {
             agent any
             when {
                 expression { env.BRANCH_NAME == 'master' }
             }
             steps {
+                checkout scm
                 script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
                 // Set pending status manually for all jobs before node is started
                 setBuildStatus("Build queued", "PENDING", "Test", git_commit)
