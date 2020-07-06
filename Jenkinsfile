@@ -30,7 +30,7 @@ pipeline {
               
             }
             steps {
-                script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
+                script { git_commit = "$GITHUB_PR_HEAD_SHA" }
                 // Set pending status manually for all jobs before node is started
                 setBuildStatus("Build queued", "PENDING", "Test", git_commit)
             }
