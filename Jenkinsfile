@@ -6,6 +6,7 @@ def db_container_name = "pymapd-db-$BUILD_NUMBER"
 def testscript_container_image = "rapidsai/rapidsai:0.8-cuda10.0-runtime-ubuntu18.04-gcc7-py3.6"
 def testscript_container_name = "pymapd-pytest-$BUILD_NUMBER"
 def stage_succeeded
+def git_commit
 
 void setBuildStatus(String message, String state, String context, String commit_sha) {
   step([
@@ -35,13 +36,14 @@ pipeline {
                 stage('Checkout') {
                     steps {
                         checkout scm
+                        git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                     }
                 }
                 stage('Test') {
                     steps {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             script { stage_succeeded = false }
-                            setBuildStatus("Running tests", "PENDING", "$STAGE_NAME", "${env.GIT_COMMIT}");
+                            setBuildStatus("Running tests", "PENDING", "$STAGE_NAME", git_commit);
                             sh """
                                 echo test
                             """
@@ -52,12 +54,12 @@ pipeline {
                         always {
                             script {
                                 if (stage_succeeded == true) {
-                                    setBuildStatus("Build succeeded", "SUCCESS", "$STAGE_NAME", "${env.GIT_COMMIT}");
+                                    setBuildStatus("Build succeeded", "SUCCESS", "$STAGE_NAME", git_commit);
                                 } else {
                                     sh """
                                         echo fail
                                     """
-                                    setBuildStatus("Build failed", "FAILURE", "$STAGE_NAME", "${env.GIT_COMMIT}");
+                                    setBuildStatus("Build failed", "FAILURE", "$STAGE_NAME", git_commit);
                                 }
                             }
                         }
