@@ -23,13 +23,18 @@ pipeline {
     agent none
     options { skipDefaultCheckout() }
     stages {
-        //stage('Set pending status') {
-        //    agent any
-        //    steps {
-        //        // Set pending status manually for all jobs before node is started
-        //        setBuildStatus("Build queued", "PENDING", "Test")
-        //    }
-        //}
+        stage('Set pending status') {
+            agent any
+            when {
+                expression { env.CHANGE_ID ==~ /.*/ }
+              
+            }
+            steps {
+                script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
+                // Set pending status manually for all jobs before node is started
+                setBuildStatus("Build queued", "PENDING", "Test", git_commit)
+            }
+        }
         stage("Linter and Tests") {
             agent { label 'centos7-p4-x86_64 && tools-docker' }
             stages {
