@@ -23,37 +23,29 @@ pipeline {
     agent none
     options { skipDefaultCheckout() }
     stages {
-        stage('Set pending status PR') {
+        stage('Set pending status') {
             agent any
             when {
                 expression { env.BRANCH_NAME != 'master' }
             }
             steps {
-                script { git_commit = "$GITHUB_PR_HEAD_SHA" }
+                script {
+                    if (env.BRANCH_NAME == 'master') {
+                        checkout scm
+                        script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
+                    } else {
+                        script { git_commit = "$GITHUB_PR_HEAD_SHA" }
+                    } 
+                }
                 // Set pending status manually for all jobs before node is started
                 setBuildStatus("Build queued", "PENDING", "Test", git_commit)
                 sh """
-                    echo prsetup
-                """
-            }
-        }
-        stage('Set pending status master') {
-            agent any
-            when {
-                expression { env.BRANCH_NAME == 'master' }
-            }
-            steps {
-                checkout scm
-                script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
-                // Set pending status manually for all jobs before node is started
-                setBuildStatus("Build queued", "PENDING", "Test", git_commit)
-                sh """
-                    echo mastersetup
+                    echo setup
                 """
             }
         }
         stage("Linter and Tests") {
-            agent { label 'centos7-p4-x86_64 && tools-docker' }
+            agent any
             stages {
                 stage('Checkout') {
                     steps {
