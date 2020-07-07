@@ -31,7 +31,7 @@ pipeline {
                         checkout scm
                         script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
                     } else {
-                        script { sh "echo else" }
+                        script { sh "env" }
                     } 
                 }
                 // Set pending status manually for all jobs before node is started
