@@ -81,3 +81,4 @@ Assuming the manual using `sphinx-env` virtualenv from above:
 ```
 
 `reStructuredText: Open Locked Preview to the Side` will give a live preview window with the generated sphinx docs.
+
