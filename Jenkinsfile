@@ -27,7 +27,7 @@ pipeline {
             agent any
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'master') {
+                    if (env.GITHUB_BRANCH_NAME == 'master') {
                         checkout scm
                         script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
                     } else {
