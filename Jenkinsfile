@@ -28,10 +28,9 @@ pipeline {
             steps {
                 script {
                     if (env.GITHUB_BRANCH_NAME == 'master') {
-                        checkout scm
-                        script { git_commit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%H'").trim() }
+                        script { git_commit = "$GITHUB_BRANCH_HEAD_SHA" }
                     } else {
-                        script { sh "env" }
+                        script { git_commit = "$GITHUB_PR_HEAD_SHA" }
                     } 
                 }
                 // Set pending status manually for all jobs before node is started
