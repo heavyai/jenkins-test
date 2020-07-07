@@ -26,7 +26,7 @@ pipeline {
         stage('Set pending status PR') {
             agent any
             when {
-                expression { env.CHANGE_ID ==~ /.*/ }
+                expression { env.BRANCH_NAME != 'master' }
             }
             steps {
                 script { git_commit = "$GITHUB_PR_HEAD_SHA" }
