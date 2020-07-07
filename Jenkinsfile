@@ -25,9 +25,6 @@ pipeline {
     stages {
         stage('Set pending status') {
             agent any
-            when {
-                expression { env.BRANCH_NAME != 'master' }
-            }
             steps {
                 script {
                     if (env.BRANCH_NAME == 'master') {
