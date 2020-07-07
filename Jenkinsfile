@@ -29,7 +29,7 @@ pipeline {
                 script {
                     //if (env.GITHUB_BRANCH_NAME == 'master') {
                     //    checkout scm
-                    git_commit = "$GITHUB_BRANCH_HEAD_SHA"
+                    sh "env"
                     //} else {
                     //    script { sh "env" }
                     //} 
